@@ -8,35 +8,63 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* FOIR Calculator Design System */
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary: Rent Bee Yellow for CTAs */
+    --primary: 50 100% 50%;
+    --primary-foreground: 222 47% 11%;
+    --primary-glow: 50 100% 65%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Financial confidence colors */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Status colors for FOIR results */
+    --success: 152 69% 86%; /* Mint green */
+    --success-foreground: 155 55% 25%;
+    --warning: 35 100% 84%; /* Soft orange */
+    --warning-foreground: 20 93% 30%;
+    --destructive: 0 78% 70%; /* Coral red */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Calming input colors */
+    --input-calm: 207 89% 86%; /* Soft blue */
+    --input-calm-foreground: 210 40% 25%;
 
-    --radius: 0.5rem;
+    --border: 214 32% 91%;
+    --input: 207 89% 86%;
+    --ring: 50 100% 50%;
+
+    --radius: 1rem;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(152 69% 90%));
+    --gradient-warning: linear-gradient(135deg, hsl(var(--warning)), hsl(35 100% 88%));
+    --gradient-danger: linear-gradient(135deg, hsl(var(--destructive)), hsl(0 78% 75%));
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(var(--primary) / 0.15);
+    --shadow-card: 0 8px 32px -8px hsl(222 47% 11% / 0.1);
+    --shadow-glow: 0 0 32px hsl(var(--primary) / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +128,120 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
+  }
+}
+
+@layer components {
+  /* Floating label animation */
+  .floating-label-group {
+    @apply relative;
+  }
+  
+  .floating-label {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-all duration-300 pointer-events-none;
+  }
+  
+  .floating-input:focus + .floating-label,
+  .floating-input:not(:placeholder-shown) + .floating-label {
+    @apply -top-2 left-2 text-xs bg-card px-1 text-primary;
+  }
+
+  /* Custom button variants */
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground font-semibold px-6 py-3 rounded-2xl shadow-soft hover:shadow-glow transition-all duration-300 transform hover:scale-105;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent border border-border text-foreground hover:bg-muted/50 px-4 py-2 rounded-xl transition-all duration-300;
+  }
+
+  /* Input variants */
+  .input-calm {
+    @apply bg-input-calm/30 border-input-calm text-input-calm-foreground placeholder:text-input-calm-foreground/60 focus:ring-2 focus:ring-ring focus:border-ring;
+  }
+
+  /* Card styles */
+  .card-elegant {
+    @apply bg-card rounded-2xl p-6 shadow-card border border-border/50 backdrop-blur-sm;
+  }
+
+  /* Status badges */
+  .status-excellent {
+    @apply bg-gradient-to-r from-success to-success/80 text-success-foreground px-4 py-2 rounded-full font-medium shadow-sm;
+  }
+
+  .status-good {
+    @apply bg-gradient-to-r from-warning to-warning/80 text-warning-foreground px-4 py-2 rounded-full font-medium shadow-sm;
+  }
+
+  .status-poor {
+    @apply bg-gradient-to-r from-destructive to-destructive/80 text-destructive-foreground px-4 py-2 rounded-full font-medium shadow-sm;
+  }
+
+  /* Animation utilities */
+  .animate-slide-in {
+    animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-bounce-in {
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  }
+}
+
+@layer utilities {
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
