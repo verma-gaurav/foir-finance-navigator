@@ -98,8 +98,12 @@ export const FOIRCalculator = () => {
           {/* Header */}
           <div className="text-center mb-12 animate-fade-in-up">
             <div className="inline-flex items-center gap-3 mb-4">
-              <div className="p-3 bg-gradient-to-r from-primary to-primary-glow rounded-2xl shadow-glow">
-                <Calculator className="h-8 w-8 text-primary-foreground" />
+              <div className="p-2 bg-white rounded-2xl shadow-glow">
+                <img 
+                  src="/lovable-uploads/62f61c47-8d87-49f7-99dd-4c482ff72083.png" 
+                  alt="लोन चाचा Logo" 
+                  className="h-16 w-16 object-contain"
+                />
               </div>
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
                 FOIR Calculator
@@ -276,6 +280,8 @@ export const FOIRCalculator = () => {
                   foir={foirResult} 
                   salary={salary}
                   totalObligations={totalEmis + creditCardFactor}
+                  emis={emis}
+                  creditCardOutstanding={creditCardOutstanding}
                 />
               )}
             </div>
