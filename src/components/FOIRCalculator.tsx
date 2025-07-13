@@ -98,8 +98,12 @@ export const FOIRCalculator = () => {
           {/* Header */}
           <div className="text-center mb-12 animate-fade-in-up">
             <div className="inline-flex items-center gap-3 mb-4">
-              <div className="p-3 bg-gradient-to-r from-primary to-primary-glow rounded-2xl shadow-glow">
-                <Calculator className="h-8 w-8 text-primary-foreground" />
+              <div className="w-16 h-16 rounded-2xl shadow-glow overflow-hidden">
+                <img 
+                  src="/lovable-uploads/a6844765-7365-44d4-be7b-4593394a3944.png" 
+                  alt="Loan Chacha Logo" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
                 FOIR Calculator
@@ -126,12 +130,13 @@ export const FOIRCalculator = () => {
                   
                   <FloatingInput
                     label="Enter your monthly net salary"
-                    type="number"
+                    type="text"
                     value={salary || ''}
                     onChange={(e) => setSalary(Number(e.target.value))}
                     placeholder="0"
                     className="input-calm"
                     icon={<IndianRupee className="h-4 w-4" />}
+                    formatNumber={true}
                   />
                 </div>
               </Card>
@@ -203,12 +208,13 @@ export const FOIRCalculator = () => {
                   
                   <FloatingInput
                     label="Enter current outstanding amount"
-                    type="number"
+                    type="text"
                     value={creditCardOutstanding || ''}
                     onChange={(e) => setCreditCardOutstanding(Number(e.target.value))}
                     placeholder="0"
                     className="input-calm"
                     icon={<IndianRupee className="h-4 w-4" />}
+                    formatNumber={true}
                   />
 
                   {creditCardOutstanding > 0 && (
@@ -276,6 +282,8 @@ export const FOIRCalculator = () => {
                   foir={foirResult} 
                   salary={salary}
                   totalObligations={totalEmis + creditCardFactor}
+                  emis={emis}
+                  creditCardOutstanding={creditCardOutstanding}
                 />
               )}
             </div>

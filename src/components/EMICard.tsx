@@ -30,12 +30,13 @@ export const EMICard: React.FC<EMICardProps> = ({
         <div className="flex-1">
           <FloatingInput
             label={`EMI ${index + 1} amount`}
-            type="number"
+            type="text"
             value={emi.amount || ''}
             onChange={(e) => onUpdate(emi.id, Number(e.target.value))}
             placeholder="0"
             className="input-calm"
             icon={<IndianRupee className="h-4 w-4" />}
+            formatNumber={true}
           />
         </div>
         

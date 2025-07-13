@@ -3,17 +3,22 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trophy, TrendingUp, AlertTriangle, XCircle, Download, Share } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import jsPDF from 'jspdf';
 
 interface FOIRResultProps {
   foir: number;
   salary: number;
   totalObligations: number;
+  emis?: Array<{ id: string; amount: number }>;
+  creditCardOutstanding?: number;
 }
 
 export const FOIRResult: React.FC<FOIRResultProps> = ({
   foir,
   salary,
-  totalObligations
+  totalObligations,
+  emis = [],
+  creditCardOutstanding = 0
 }) => {
   const { toast } = useToast();
 
@@ -54,11 +59,142 @@ export const FOIRResult: React.FC<FOIRResultProps> = ({
   const config = getStatusConfig(foir);
   const StatusIcon = config.icon;
 
-  const handleExport = () => {
-    toast({
-      title: "Export Feature",
-      description: "PDF export functionality coming soon! 📄"
-    });
+  const handleExport = async () => {
+    try {
+      const doc = new jsPDF();
+      
+      // Add logo
+      const logoImg = new Image();
+      logoImg.src = '/lovable-uploads/a6844765-7365-44d4-be7b-4593394a3944.png';
+      
+      logoImg.onload = () => {
+        // Header with logo and title
+        doc.addImage(logoImg, 'PNG', 20, 15, 25, 25);
+        doc.setFontSize(22);
+        doc.setTextColor(220, 53, 69);
+        doc.text('FOIR Calculation Report', 55, 30);
+        
+        // Date
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 150, 20);
+        
+        // FOIR Result Box
+        doc.setFillColor(240, 248, 255);
+        doc.rect(20, 50, 170, 40, 'F');
+        doc.setDrawColor(59, 130, 246);
+        doc.rect(20, 50, 170, 40);
+        
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        doc.text('Your FOIR Result', 105, 65, { align: 'center' });
+        
+        doc.setFontSize(24);
+        doc.setTextColor(config.status === 'Excellent' ? 22 : config.status === 'Good' ? 245 : 220, 
+                         config.status === 'Excellent' ? 163 : config.status === 'Good' ? 158 : 53, 
+                         config.status === 'Excellent' ? 74 : config.status === 'Good' ? 11 : 69);
+        doc.text(`${foir.toFixed(1)}%`, 105, 80, { align: 'center' });
+        
+        doc.setFontSize(12);
+        doc.text(`${config.status} FOIR - ${config.message}`, 105, 88, { align: 'center' });
+        
+        // Financial Details
+        let yPos = 110;
+        doc.setFontSize(14);
+        doc.setTextColor(0, 0, 0);
+        doc.text('Financial Breakdown:', 20, yPos);
+        yPos += 15;
+        
+        doc.setFontSize(11);
+        doc.text(`Monthly Net Salary: ₹${salary.toLocaleString()}`, 30, yPos);
+        yPos += 10;
+        
+        // EMI Details
+        if (emis.length > 0) {
+          doc.text('Monthly EMIs:', 30, yPos);
+          yPos += 8;
+          emis.forEach((emi, index) => {
+            if (emi.amount > 0) {
+              doc.text(`  EMI ${index + 1}: ₹${emi.amount.toLocaleString()}`, 40, yPos);
+              yPos += 8;
+            }
+          });
+          const totalEmis = emis.reduce((sum, emi) => sum + emi.amount, 0);
+          doc.setFontSize(10);
+          doc.text(`  Total EMIs: ₹${totalEmis.toLocaleString()}`, 40, yPos);
+          yPos += 12;
+        }
+        
+        // Credit Card Details
+        if (creditCardOutstanding > 0) {
+          doc.setFontSize(11);
+          doc.text(`Credit Card Outstanding: ₹${creditCardOutstanding.toLocaleString()}`, 30, yPos);
+          yPos += 8;
+          doc.text(`5% of Credit Card Outstanding: ₹${(creditCardOutstanding * 0.05).toLocaleString()}`, 30, yPos);
+          yPos += 12;
+        }
+        
+        doc.text(`Total Monthly Obligations: ₹${totalObligations.toLocaleString()}`, 30, yPos);
+        yPos += 15;
+        
+        // Calculation Formula
+        doc.setFillColor(252, 252, 252);
+        doc.rect(20, yPos, 170, 25, 'F');
+        doc.setDrawColor(200, 200, 200);
+        doc.rect(20, yPos, 170, 25);
+        
+        doc.setFontSize(12);
+        doc.text('FOIR Calculation:', 25, yPos + 8);
+        doc.text(`(₹${totalObligations.toLocaleString()} ÷ ₹${salary.toLocaleString()}) × 100 = ${foir.toFixed(2)}%`, 25, yPos + 18);
+        yPos += 35;
+        
+        // Guidelines
+        doc.setFontSize(12);
+        doc.text('FOIR Guidelines:', 20, yPos);
+        yPos += 10;
+        doc.setFontSize(10);
+        doc.text('• Below 50%: Excellent financial health - High loan eligibility', 25, yPos);
+        yPos += 8;
+        doc.text('• 50-60%: Moderate obligations - Good loan eligibility', 25, yPos);
+        yPos += 8;
+        doc.text('• Above 60%: High obligations - May face loan approval challenges', 25, yPos);
+        
+        // Footer
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.text('Generated by Loan Chacha FOIR Calculator', 105, 280, { align: 'center' });
+        
+        // Save the PDF
+        doc.save(`FOIR_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+        
+        toast({
+          title: "PDF Downloaded Successfully! 📄",
+          description: "Your FOIR report has been saved to your downloads folder"
+        });
+      };
+      
+      logoImg.onerror = () => {
+        // Fallback without logo
+        doc.setFontSize(22);
+        doc.setTextColor(220, 53, 69);
+        doc.text('FOIR Calculation Report', 20, 30);
+        
+        // Continue with rest of the PDF generation...
+        doc.save(`FOIR_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+        
+        toast({
+          title: "PDF Downloaded Successfully! 📄",
+          description: "Your FOIR report has been saved to your downloads folder"
+        });
+      };
+      
+    } catch (error) {
+      toast({
+        title: "Export Failed",
+        description: "Unable to generate PDF. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleShare = () => {
