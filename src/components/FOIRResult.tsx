@@ -109,44 +109,62 @@ export const FOIRResult: React.FC<FOIRResultProps> = ({
         doc.text(`Monthly Net Salary: ₹${salary.toLocaleString()}`, 30, yPos);
         yPos += 10;
         
-        // EMI Details
+        // Add colorful section headers with background
+        doc.setFillColor(220, 53, 69);
+        doc.rect(20, yPos, 170, 8, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(12);
+        doc.text('Financial Breakdown', 25, yPos + 6);
+        yPos += 15;
+        
+        // EMI Details with colorful styling
         if (emis.length > 0) {
-          doc.text('Monthly EMIs:', 30, yPos);
-          yPos += 8;
+          doc.setFillColor(254, 240, 138);
+          doc.rect(25, yPos, 160, 5, 'F');
+          doc.setTextColor(146, 64, 14);
+          doc.setFontSize(11);
+          doc.text('Monthly EMIs:', 30, yPos + 4);
+          yPos += 12;
+          
           emis.forEach((emi, index) => {
             if (emi.amount > 0) {
-              doc.text(`  EMI ${index + 1}: ₹${emi.amount.toLocaleString()}`, 40, yPos);
+              doc.setTextColor(0, 0, 0);
+              doc.text(`EMI ${index + 1}: Rs ${emi.amount.toLocaleString()}`, 40, yPos);
               yPos += 8;
             }
           });
           const totalEmis = emis.reduce((sum, emi) => sum + emi.amount, 0);
+          doc.setFillColor(34, 197, 94);
+          doc.rect(35, yPos - 2, 120, 6, 'F');
+          doc.setTextColor(255, 255, 255);
           doc.setFontSize(10);
-          doc.text(`  Total EMIs: ₹${totalEmis.toLocaleString()}`, 40, yPos);
-          yPos += 12;
+          doc.text(`Total EMIs: Rs ${totalEmis.toLocaleString()}`, 40, yPos + 2);
+          yPos += 15;
         }
         
-        // Credit Card Details
+        // Credit Card Details with colorful styling
         if (creditCardOutstanding > 0) {
+          doc.setFillColor(254, 240, 138);
+          doc.rect(25, yPos, 160, 5, 'F');
+          doc.setTextColor(146, 64, 14);
           doc.setFontSize(11);
-          doc.text(`Credit Card Outstanding: ₹${creditCardOutstanding.toLocaleString()}`, 30, yPos);
-          yPos += 8;
-          doc.text(`5% of Credit Card Outstanding: ₹${(creditCardOutstanding * 0.05).toLocaleString()}`, 30, yPos);
+          doc.text('Credit Card Details:', 30, yPos + 4);
           yPos += 12;
+          
+          doc.setTextColor(0, 0, 0);
+          doc.text(`Outstanding Amount: Rs ${creditCardOutstanding.toLocaleString()}`, 40, yPos);
+          yPos += 8;
+          doc.text(`5% of Outstanding: Rs ${(creditCardOutstanding * 0.05).toLocaleString()}`, 40, yPos);
+          yPos += 15;
         }
         
-        doc.text(`Total Monthly Obligations: ₹${totalObligations.toLocaleString()}`, 30, yPos);
-        yPos += 15;
-        
-        // Calculation Formula
-        doc.setFillColor(252, 252, 252);
-        doc.rect(20, yPos, 170, 25, 'F');
-        doc.setDrawColor(200, 200, 200);
-        doc.rect(20, yPos, 170, 25);
-        
+        // Total obligations with highlighting
+        doc.setFillColor(59, 130, 246);
+        doc.rect(25, yPos - 2, 160, 8, 'F');
+        doc.setTextColor(255, 255, 255);
         doc.setFontSize(12);
-        doc.text('FOIR Calculation:', 25, yPos + 8);
-        doc.text(`(₹${totalObligations.toLocaleString()} ÷ ₹${salary.toLocaleString()}) × 100 = ${foir.toFixed(2)}%`, 25, yPos + 18);
-        yPos += 35;
+        doc.text(`Total Monthly Obligations: Rs ${totalObligations.toLocaleString()}`, 30, yPos + 4);
+        yPos += 20;
         
         // Guidelines
         doc.setFontSize(12);
