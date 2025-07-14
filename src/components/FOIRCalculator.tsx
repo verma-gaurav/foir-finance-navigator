@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { FloatingInput } from './FloatingInput';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { EMICard } from './EMICard';
 import { FOIRResult } from './FOIRResult';
 import { Plus, IndianRupee, Info, RotateCcw, Calculator } from 'lucide-react';
@@ -128,16 +129,20 @@ export const FOIRCalculator = () => {
                     <h3 className="text-xl font-semibold">Monthly Net Salary</h3>
                   </div>
                   
-                  <FloatingInput
-                    label="Enter your monthly net salary"
-                    type="text"
-                    value={salary || ''}
-                    onChange={(e) => setSalary(Number(e.target.value))}
-                    placeholder="0"
-                    className="input-calm"
-                    icon={<IndianRupee className="h-4 w-4" />}
-                    formatNumber={true}
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="salary">Enter your monthly net salary</Label>
+                    <div className="relative">
+                      <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="salary"
+                        type="text"
+                        value={salary ? salary.toLocaleString('en-IN') : ''}
+                        onChange={(e) => setSalary(Number(e.target.value.replace(/,/g, '')))}
+                        placeholder="0"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
                 </div>
               </Card>
 
@@ -206,16 +211,20 @@ export const FOIRCalculator = () => {
                     </Tooltip>
                   </div>
                   
-                  <FloatingInput
-                    label="Enter current outstanding amount"
-                    type="text"
-                    value={creditCardOutstanding || ''}
-                    onChange={(e) => setCreditCardOutstanding(Number(e.target.value))}
-                    placeholder="0"
-                    className="input-calm"
-                    icon={<IndianRupee className="h-4 w-4" />}
-                    formatNumber={true}
-                  />
+                  <div className="space-y-2">
+                    <Label htmlFor="creditCard">Enter current outstanding amount</Label>
+                    <div className="relative">
+                      <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="creditCard"
+                        type="text"
+                        value={creditCardOutstanding ? creditCardOutstanding.toLocaleString('en-IN') : ''}
+                        onChange={(e) => setCreditCardOutstanding(Number(e.target.value.replace(/,/g, '')))}
+                        placeholder="0"
+                        className="pl-10"
+                      />
+                    </div>
+                  </div>
 
                   {creditCardOutstanding > 0 && (
                     <div className="p-4 bg-success/20 rounded-xl border border-success/30 animate-fade-in-up">

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FloatingInput } from './FloatingInput';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { IndianRupee, Trash2 } from 'lucide-react';
 
 interface EMI {
@@ -27,17 +28,19 @@ export const EMICard: React.FC<EMICardProps> = ({
   return (
     <Card className="p-4 border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-soft transition-all duration-300 animate-slide-in">
       <div className="flex items-center gap-4">
-        <div className="flex-1">
-          <FloatingInput
-            label={`EMI ${index + 1} amount`}
-            type="text"
-            value={emi.amount || ''}
-            onChange={(e) => onUpdate(emi.id, Number(e.target.value))}
-            placeholder="0"
-            className="input-calm"
-            icon={<IndianRupee className="h-4 w-4" />}
-            formatNumber={true}
-          />
+        <div className="flex-1 space-y-2">
+          <Label htmlFor={`emi-${emi.id}`}>{`EMI ${index + 1} amount`}</Label>
+          <div className="relative">
+            <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              id={`emi-${emi.id}`}
+              type="text"
+              value={emi.amount ? emi.amount.toLocaleString('en-IN') : ''}
+              onChange={(e) => onUpdate(emi.id, Number(e.target.value.replace(/,/g, '')))}
+              placeholder="0"
+              className="pl-10"
+            />
+          </div>
         </div>
         
         {canRemove && (
