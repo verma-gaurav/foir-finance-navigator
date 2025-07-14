@@ -105,8 +105,9 @@ export const FOIRResult: React.FC<FOIRResultProps> = ({
         doc.text('Financial Breakdown:', 20, yPos);
         yPos += 15;
         
+        doc.setFont("helvetica", "normal");
         doc.setFontSize(11);
-        doc.text(`Monthly Net Salary: ₹${salary.toLocaleString()}`, 30, yPos);
+        doc.text(`Monthly Net Salary: Rs ${salary.toLocaleString('en-IN')}`, 30, yPos);
         yPos += 10;
         
         // EMI Details
@@ -115,38 +116,27 @@ export const FOIRResult: React.FC<FOIRResultProps> = ({
           yPos += 8;
           emis.forEach((emi, index) => {
             if (emi.amount > 0) {
-              doc.text(`  EMI ${index + 1}: ₹${emi.amount.toLocaleString()}`, 40, yPos);
+              doc.text(`  EMI ${index + 1}: Rs ${emi.amount.toLocaleString('en-IN')}`, 40, yPos);
               yPos += 8;
             }
           });
           const totalEmis = emis.reduce((sum, emi) => sum + emi.amount, 0);
           doc.setFontSize(10);
-          doc.text(`  Total EMIs: ₹${totalEmis.toLocaleString()}`, 40, yPos);
+          doc.text(`  Total EMIs: Rs ${totalEmis.toLocaleString('en-IN')}`, 40, yPos);
           yPos += 12;
         }
         
         // Credit Card Details
         if (creditCardOutstanding > 0) {
           doc.setFontSize(11);
-          doc.text(`Credit Card Outstanding: ₹${creditCardOutstanding.toLocaleString()}`, 30, yPos);
+          doc.text(`Credit Card Outstanding: Rs ${creditCardOutstanding.toLocaleString('en-IN')}`, 30, yPos);
           yPos += 8;
-          doc.text(`5% of Credit Card Outstanding: ₹${(creditCardOutstanding * 0.05).toLocaleString()}`, 30, yPos);
+          doc.text(`5% of Credit Card Outstanding: Rs ${(creditCardOutstanding * 0.05).toLocaleString('en-IN')}`, 30, yPos);
           yPos += 12;
         }
         
-        doc.text(`Total Monthly Obligations: ₹${totalObligations.toLocaleString()}`, 30, yPos);
+        doc.text(`Total Monthly Obligations: Rs ${totalObligations.toLocaleString('en-IN')}`, 30, yPos);
         yPos += 15;
-        
-        // Calculation Formula
-        doc.setFillColor(252, 252, 252);
-        doc.rect(20, yPos, 170, 25, 'F');
-        doc.setDrawColor(200, 200, 200);
-        doc.rect(20, yPos, 170, 25);
-        
-        doc.setFontSize(12);
-        doc.text('FOIR Calculation:', 25, yPos + 8);
-        doc.text(`(₹${totalObligations.toLocaleString()} ÷ ₹${salary.toLocaleString()}) × 100 = ${foir.toFixed(2)}%`, 25, yPos + 18);
-        yPos += 35;
         
         // Guidelines
         doc.setFontSize(12);
