@@ -96,20 +96,11 @@ export const FOIRCalculator = () => {
     <TooltipProvider>
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 py-8 px-4">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
+          {/* Page Title */}
           <div className="text-center mb-12 animate-fade-in-up">
-            <div className="inline-flex items-center gap-3 mb-4">
-              <div className="w-16 h-16 rounded-2xl shadow-glow overflow-hidden">
-                <img 
-                  src="/lovable-uploads/a6844765-7365-44d4-be7b-4593394a3944.png" 
-                  alt="Loan Chacha Logo" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-                FOIR Calculator
-              </h1>
-            </div>
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent mb-4">
+              FOIR Calculator
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Calculate your Fixed Obligations to Income Ratio and understand your loan eligibility
               with our intelligent financial assessment tool.

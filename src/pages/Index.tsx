@@ -1,7 +1,13 @@
+import { Header } from '../components/Header';
 import { FOIRCalculator } from '../components/FOIRCalculator';
 
 const Index = () => {
-  return <FOIRCalculator />;
+  return (
+    <>
+      <Header />
+      <FOIRCalculator />
+    </>
+  );
 };
 
 export default Index;
