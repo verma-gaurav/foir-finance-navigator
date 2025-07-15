@@ -156,11 +156,6 @@ export const FOIRResult: React.FC<FOIRResultProps> = ({
         
         // Save the PDF
         doc.save(`FOIR_Report_${new Date().toISOString().split('T')[0]}.pdf`);
-        
-        toast({
-          title: "PDF Downloaded Successfully! 📄",
-          description: "Your FOIR report has been saved to your downloads folder"
-        });
       };
       
       logoImg.onerror = () => {
@@ -171,11 +166,6 @@ export const FOIRResult: React.FC<FOIRResultProps> = ({
         
         // Continue with rest of the PDF generation...
         doc.save(`FOIR_Report_${new Date().toISOString().split('T')[0]}.pdf`);
-        
-        toast({
-          title: "PDF Downloaded Successfully! 📄",
-          description: "Your FOIR report has been saved to your downloads folder"
-        });
       };
       
     } catch (error) {
@@ -187,19 +177,38 @@ export const FOIRResult: React.FC<FOIRResultProps> = ({
     }
   };
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: 'My FOIR Result',
-        text: `My FOIR is ${foir.toFixed(2)}% - ${config.status}`,
-        url: window.location.href
-      });
-    } else {
-      navigator.clipboard.writeText(`My FOIR is ${foir.toFixed(2)}% - ${config.status}`);
-      toast({
-        title: "Result Copied!",
-        description: "FOIR result copied to clipboard"
-      });
+  const handleShare = async () => {
+    const shareText = `My FOIR is ${foir.toFixed(2)}% - ${config.status}`;
+    
+    try {
+      if (navigator.share && navigator.canShare) {
+        await navigator.share({
+          title: 'My FOIR Result',
+          text: shareText,
+          url: window.location.href
+        });
+      } else {
+        await navigator.clipboard.writeText(shareText);
+        toast({
+          title: "Result Copied!",
+          description: "FOIR result copied to clipboard"
+        });
+      }
+    } catch (error) {
+      // Fallback to clipboard if share fails
+      try {
+        await navigator.clipboard.writeText(shareText);
+        toast({
+          title: "Result Copied!",
+          description: "FOIR result copied to clipboard"
+        });
+      } catch (clipboardError) {
+        toast({
+          title: "Share Failed",
+          description: "Unable to share or copy result",
+          variant: "destructive"
+        });
+      }
     }
   };
 
