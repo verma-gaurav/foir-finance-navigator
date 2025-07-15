@@ -94,36 +94,34 @@ export const FOIRCalculator = () => {
 
   return (
     <TooltipProvider>
-      <main className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
-        <div className="container max-w-7xl mx-auto px-6 py-12">
-          {/* Page Title Section */}
-          <header className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent mb-6 leading-tight">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          {/* Page Title */}
+          <div className="text-center mb-12 animate-fade-in-up">
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent mb-4">
               FOIR Calculator
             </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Calculate your Fixed Obligations to Income Ratio and understand your loan eligibility
               with our intelligent financial assessment tool.
             </p>
-          </header>
+          </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 xl:gap-16">
+          <div className="grid lg:grid-cols-2 gap-8">
             {/* Input Section */}
-            <section className="space-y-8" aria-labelledby="input-section">
-              <h3 id="input-section" className="sr-only">Financial Information Input</h3>
-              
+            <div className="space-y-6">
               {/* Salary Input */}
               <Card className="card-elegant animate-slide-in">
-                <div className="space-y-6">
-                  <header className="flex items-center gap-4">
-                    <div className="p-3 bg-input-calm/20 rounded-xl flex-shrink-0">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-input-calm/20 rounded-xl">
                       <IndianRupee className="h-5 w-5 text-input-calm-foreground" />
                     </div>
-                    <h4 className="text-xl font-semibold leading-tight">Monthly Net Salary</h4>
-                  </header>
+                    <h3 className="text-xl font-semibold">Monthly Net Salary</h3>
+                  </div>
                   
-                  <div className="space-y-3">
-                    <Label htmlFor="salary" className="text-base font-medium">Enter your monthly net salary</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="salary">Enter your monthly net salary</Label>
                     <div className="relative">
                       <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -132,13 +130,9 @@ export const FOIRCalculator = () => {
                         value={salary ? salary.toLocaleString('en-IN') : ''}
                         onChange={(e) => setSalary(Number(e.target.value.replace(/,/g, '')))}
                         placeholder="0"
-                        className="pl-10 h-12 text-base"
-                        aria-describedby="salary-help"
+                        className="pl-10"
                       />
                     </div>
-                    <p id="salary-help" className="text-sm text-muted-foreground">
-                      Enter your monthly take-home salary after deductions
-                    </p>
                   </div>
                 </div>
               </Card>
@@ -146,43 +140,41 @@ export const FOIRCalculator = () => {
               {/* EMI Section */}
               <Card className="card-elegant animate-slide-in" style={{ animationDelay: '0.1s' }}>
                 <div className="space-y-6">
-                  <header className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-warning/20 rounded-xl flex-shrink-0">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-warning/20 rounded-xl">
                         <Calculator className="h-5 w-5 text-warning-foreground" />
                       </div>
-                      <h4 className="text-xl font-semibold leading-tight">Monthly EMIs</h4>
+                      <h3 className="text-xl font-semibold">Monthly EMIs</h3>
                     </div>
                     <Button
                       onClick={addEMI}
                       variant="outline"
                       size="sm"
-                      className="btn-ghost flex-shrink-0"
-                      aria-label="Add new EMI entry"
+                      className="btn-ghost"
                     >
                       <Plus className="h-4 w-4 mr-2" />
                       Add EMI
                     </Button>
-                  </header>
+                  </div>
 
-                  <div className="space-y-4" role="list" aria-label="EMI entries">
+                  <div className="space-y-4">
                     {emis.map((emi, index) => (
-                      <div key={emi.id} role="listitem">
-                        <EMICard
-                          emi={emi}
-                          index={index}
-                          onUpdate={updateEMI}
-                          onRemove={removeEMI}
-                          canRemove={emis.length > 1}
-                        />
-                      </div>
+                      <EMICard
+                        key={emi.id}
+                        emi={emi}
+                        index={index}
+                        onUpdate={updateEMI}
+                        onRemove={removeEMI}
+                        canRemove={emis.length > 1}
+                      />
                     ))}
                   </div>
 
                   {totalEmis > 0 && (
-                    <div className="p-5 bg-muted/50 rounded-xl border border-border/50">
+                    <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
                       <div className="flex items-center justify-between">
-                        <span className="font-medium text-muted-foreground text-base">Total Monthly EMIs:</span>
+                        <span className="font-medium text-muted-foreground">Total Monthly EMIs:</span>
                         <span className="text-xl font-bold text-foreground">
                           ₹{totalEmis.toLocaleString()}
                         </span>
@@ -194,26 +186,24 @@ export const FOIRCalculator = () => {
 
               {/* Credit Card Outstanding */}
               <Card className="card-elegant animate-slide-in" style={{ animationDelay: '0.2s' }}>
-                <div className="space-y-6">
-                  <header className="flex items-center gap-4">
-                    <div className="p-3 bg-destructive/20 rounded-xl flex-shrink-0">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-destructive/20 rounded-xl">
                       <IndianRupee className="h-5 w-5 text-destructive-foreground" />
                     </div>
-                    <h4 className="text-xl font-semibold leading-tight">Credit Card Outstanding</h4>
+                    <h3 className="text-xl font-semibold">Credit Card Outstanding</h3>
                     <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button className="p-1 rounded-md hover:bg-muted/50 transition-colors" aria-label="Information about credit card calculation">
-                          <Info className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
-                        </button>
+                      <TooltipTrigger>
+                        <Info className="h-4 w-4 text-muted-foreground hover:text-foreground transition-colors" />
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs">
                         <p>Only 5% of your credit card outstanding amount is considered in FOIR calculation</p>
                       </TooltipContent>
                     </Tooltip>
-                  </header>
+                  </div>
                   
-                  <div className="space-y-3">
-                    <Label htmlFor="creditCard" className="text-base font-medium">Enter current outstanding amount</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="creditCard">Enter current outstanding amount</Label>
                     <div className="relative">
                       <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -222,65 +212,53 @@ export const FOIRCalculator = () => {
                         value={creditCardOutstanding ? creditCardOutstanding.toLocaleString('en-IN') : ''}
                         onChange={(e) => setCreditCardOutstanding(Number(e.target.value.replace(/,/g, '')))}
                         placeholder="0"
-                        className="pl-10 h-12 text-base"
-                        aria-describedby="creditCard-help"
+                        className="pl-10"
                       />
                     </div>
-                    <p id="creditCard-help" className="text-sm text-muted-foreground">
-                      Total outstanding balance on all credit cards
-                    </p>
                   </div>
 
                   {creditCardOutstanding > 0 && (
-                    <div className="p-5 bg-success/20 rounded-xl border border-success/30 animate-fade-in-up">
-                      <div className="flex items-start gap-3 text-success-foreground">
-                        <Info className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                        <div className="space-y-1">
-                          <span className="text-sm font-medium block">
-                            Calculation: 5% of ₹{creditCardOutstanding.toLocaleString()} = ₹{creditCardFactor.toLocaleString()}
-                          </span>
-                          <span className="text-xs opacity-90 block">
-                            This amount will be added to your monthly obligations
-                          </span>
-                        </div>
+                    <div className="p-4 bg-success/20 rounded-xl border border-success/30 animate-fade-in-up">
+                      <div className="flex items-center gap-2 text-success-foreground">
+                        <Info className="h-4 w-4" />
+                        <span className="text-sm font-medium">
+                          🧮 5% of ₹{creditCardOutstanding.toLocaleString()} = ₹{creditCardFactor.toLocaleString()} will be added to your obligations
+                        </span>
                       </div>
                     </div>
                   )}
                 </div>
               </Card>
-            </section>
+            </div>
 
             {/* Result Section */}
-            <aside className="space-y-8" aria-labelledby="results-section">
-              <h3 id="results-section" className="sr-only">Calculation Results</h3>
-              
+            <div className="space-y-6">
               {/* Calculate Button */}
               <Card className="card-elegant animate-slide-in" style={{ animationDelay: '0.3s' }}>
-                <div className="space-y-8">
-                  <header className="text-center space-y-3">
-                    <h4 className="text-2xl font-bold leading-tight">Ready to Calculate?</h4>
-                    <p className="text-muted-foreground text-base leading-relaxed">
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold mb-2">Ready to Calculate?</h3>
+                    <p className="text-muted-foreground">
                       Get your FOIR score and loan eligibility status instantly
                     </p>
-                  </header>
+                  </div>
 
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button
                       onClick={calculateFOIR}
                       disabled={!isFormValid || isCalculating}
-                      className="btn-primary flex-1 h-12"
+                      className="btn-primary flex-1"
                       size="lg"
-                      aria-describedby="calculate-button-help"
                     >
                       {isCalculating ? (
                         <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-foreground border-t-transparent mr-2" aria-hidden="true"></div>
-                          <span>Calculating...</span>
+                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary-foreground border-t-transparent mr-2"></div>
+                          Calculating...
                         </>
                       ) : (
                         <>
-                          <Calculator className="h-5 w-5 mr-2" aria-hidden="true" />
-                          <span>Calculate FOIR</span>
+                          <Calculator className="h-5 w-5 mr-2" />
+                          Calculate FOIR
                         </>
                       )}
                     </Button>
@@ -288,20 +266,13 @@ export const FOIRCalculator = () => {
                     <Button
                       onClick={resetCalculator}
                       variant="outline"
-                      className="btn-ghost h-12"
+                      className="btn-ghost"
                       size="lg"
-                      aria-label="Reset all input fields"
                     >
-                      <RotateCcw className="h-4 w-4 mr-2" aria-hidden="true" />
-                      <span>Reset</span>
+                      <RotateCcw className="h-4 w-4 mr-2" />
+                      Reset
                     </Button>
                   </div>
-                  
-                  {!isFormValid && (
-                    <p id="calculate-button-help" className="text-sm text-muted-foreground text-center">
-                      Please fill in all required fields to calculate FOIR
-                    </p>
-                  )}
                 </div>
               </Card>
 
@@ -315,10 +286,10 @@ export const FOIRCalculator = () => {
                   creditCardOutstanding={creditCardOutstanding}
                 />
               )}
-            </aside>
+            </div>
           </div>
         </div>
-      </main>
+      </div>
     </TooltipProvider>
   );
 };

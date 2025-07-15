@@ -26,12 +26,10 @@ export const EMICard: React.FC<EMICardProps> = ({
   canRemove
 }) => {
   return (
-    <Card className="p-5 border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-soft transition-all duration-300 animate-slide-in">
-      <div className="flex items-end gap-4">
-        <div className="flex-1 space-y-3">
-          <Label htmlFor={`emi-${emi.id}`} className="text-base font-medium">
-            EMI {index + 1} amount
-          </Label>
+    <Card className="p-4 border border-border/50 bg-card/50 backdrop-blur-sm hover:shadow-soft transition-all duration-300 animate-slide-in">
+      <div className="flex items-center gap-4">
+        <div className="flex-1 space-y-2">
+          <Label htmlFor={`emi-${emi.id}`}>{`EMI ${index + 1} amount`}</Label>
           <div className="relative">
             <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
@@ -40,13 +38,9 @@ export const EMICard: React.FC<EMICardProps> = ({
               value={emi.amount ? emi.amount.toLocaleString('en-IN') : ''}
               onChange={(e) => onUpdate(emi.id, Number(e.target.value.replace(/,/g, '')))}
               placeholder="0"
-              className="pl-10 h-12 text-base"
-              aria-describedby={`emi-${emi.id}-help`}
+              className="pl-10"
             />
           </div>
-          <p id={`emi-${emi.id}-help`} className="text-sm text-muted-foreground">
-            Monthly EMI payment amount
-          </p>
         </div>
         
         {canRemove && (
@@ -54,8 +48,7 @@ export const EMICard: React.FC<EMICardProps> = ({
             onClick={() => onRemove(emi.id)}
             variant="outline"
             size="sm"
-            className="p-3 h-12 w-12 text-destructive hover:text-destructive-foreground hover:bg-destructive/10 border-destructive/20 flex-shrink-0"
-            aria-label={`Remove EMI ${index + 1}`}
+            className="p-2 h-10 w-10 text-destructive hover:text-destructive-foreground hover:bg-destructive/10 border-destructive/20"
           >
             <Trash2 className="h-4 w-4" />
           </Button>
